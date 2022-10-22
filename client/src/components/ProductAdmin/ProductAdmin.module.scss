@@ -1,0 +1,100 @@
+td .headerList {
+  height: 30px;
+}
+td .fileWrapper {
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  font-size: 14px;
+  color: gray;
+  padding: 5px 5px;
+  height: 33.25px;
+  transition: 0.15s ease-in-out;
+  &:hover {
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+  }
+  .fileLoad {
+    visibility: hidden;
+  }
+}
+.photos {
+  padding: 10px 10px;
+}
+
+.uploadedPhotos {
+  display: flex;
+  gap: 10px;
+}
+
+.items {
+  width: 100% !important;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 10%;
+  gap: 5px;
+  input {
+    box-sizing: border-box;
+    height: 33.25px;
+    border-radius: 10px;
+    padding: 0 5px;
+    width: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+  }
+  textarea {
+    box-sizing: border-box;
+    min-height: 33.25px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    padding: 5px;
+    width: 100%;
+  }
+  button {
+    box-sizing: border-box;
+    cursor: pointer;
+    width: 70%;
+    border: 1px solid rgba(0, 0, 0, 0.4);
+    background: lightgreen;
+    border-radius: 10px;
+    transition: 0.15s ease-in-out;
+    &:hover {
+      background: rgb(1, 197, 1);
+    }
+  }
+}
+
+.btnWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  .addButton {
+    cursor: pointer;
+    width: 50%;
+    margin: 10px auto;
+    background: lightgreen;
+    border-radius: 10px;
+    font-size: 17px;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    transition: 0.15s ease-in-out;
+    &:hover {
+      background: rgb(1, 197, 1);
+    }
+  }
+  .delButton {
+    cursor: pointer;
+    width: 50%;
+    margin: 10px auto;
+    background: rgb(255, 74, 46);
+    border-radius: 10px;
+    font-size: 17px;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    transition: 0.15s ease-in-out;
+    &:hover {
+      background: rgb(190, 34, 34);
+    }
+  }
+}
+.pad5 {
+  padding: 5px 10px !important;
+}

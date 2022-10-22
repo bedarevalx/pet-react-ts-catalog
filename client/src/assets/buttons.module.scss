@@ -1,0 +1,32 @@
+.btnWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  .addButton {
+    cursor: pointer;
+    width: 50%;
+    margin: 10px auto;
+    background: lightgreen;
+    border-radius: 10px;
+    font-size: 17px;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    transition: 0.15s ease-in-out;
+    &:hover {
+      background: rgb(1, 197, 1);
+    }
+  }
+  .delButton {
+    cursor: pointer;
+    width: 50%;
+    margin: 10px auto;
+    background: rgb(255, 74, 46);
+    border-radius: 10px;
+    font-size: 17px;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    transition: 0.15s ease-in-out;
+    &:hover {
+      background: rgb(190, 34, 34);
+    }
+  }
+}

@@ -1,0 +1,10 @@
+.products {
+  min-height: 80px;
+  margin-bottom: 170px;
+}
+.productsList {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 5px;
+}

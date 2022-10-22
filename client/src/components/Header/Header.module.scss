@@ -1,0 +1,113 @@
+.shortMenu {
+  opacity: 1;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1;
+  transition: 0.15s ease-in-out;
+  display: flex;
+  align-items: center;
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    li {
+      a {
+        border-radius: 10px;
+        padding: 0 10%;
+        text-shadow: 3px 5px 10px #000;
+        font-size: 2rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: white;
+        text-decoration: none;
+        transition: 0.15s ease-in-out;
+        &:hover {
+          background: rgba(0, 0, 0, 0.8);
+        }
+      }
+    }
+  }
+}
+.menuClosed {
+  opacity: 0;
+  visibility: hidden;
+}
+.btnCloseMenu {
+  cursor: pointer;
+  border-radius: 15px;
+  transition: 0.15s ease-in-out;
+  right: 6%;
+  top: 1%;
+  position: absolute;
+  &:hover {
+    background: rgba(0, 0, 0, 0.5);
+  }
+}
+.header {
+  min-height: 60px;
+  margin-bottom: 2%;
+  nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    padding: 10px 0px;
+    margin: 0 auto;
+    .logoPart {
+      text-decoration: none;
+      color: black;
+      display: flex;
+      align-items: center;
+      img {
+        height: 48px;
+        width: 48px;
+        margin-right: 5px;
+      }
+      .logoText {
+        h4 {
+          display: flex;
+          text-decoration: none;
+          color: black;
+          margin: 0 0;
+        }
+      }
+    }
+    ul {
+      display: flex;
+      gap: 15px;
+      a {
+        text-decoration: none;
+        color: black;
+        font-size: 20px;
+      }
+      @media (max-width: 991px) {
+        display: none;
+      }
+    }
+    .burgerMenu {
+      display: flex;
+      justify-content: center;
+      padding: 5px 5px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.15s ease-in-out;
+      &:hover {
+        background: rgba(0, 0, 0, 0.2);
+      }
+      img {
+        width: 32px;
+        height: 32px;
+      }
+      @media (min-width: 992px) {
+        display: none;
+      }
+    }
+  }
+}

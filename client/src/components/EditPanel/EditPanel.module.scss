@@ -1,0 +1,100 @@
+.adminList {
+  margin: 5% auto;
+  max-width: 70%;
+  text-align: start;
+  @media (max-width: 768px) {
+    max-width: 100%;
+  }
+  table {
+    border-collapse: collapse;
+    text-align: start;
+    width: 100%;
+    margin-bottom: 3%;
+
+    tr {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+
+      td:last-child {
+        width: 70%;
+        button {
+          text-align: start;
+          padding: 10px;
+          // height: 70%;
+          width: 100%;
+          position: relative;
+          cursor: pointer;
+          background: white;
+          color: rgba(0, 0, 0, 0.4);
+          border: 1px solid rgba(0, 0, 0, 0.3);
+          border-radius: 10px;
+          transition: 0.12s ease-in-out;
+          &:hover {
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+          }
+        }
+        input {
+          box-sizing: border-box;
+          width: 100%;
+          padding: 10px;
+          height: 70%;
+          border-radius: 10px;
+          border: 1px solid rgba(0, 0, 0, 0.3);
+        }
+        textarea {
+          box-sizing: border-box;
+          border: 1px solid rgba(0, 0, 0, 0.3);
+          padding: 5px;
+          border-radius: 10px;
+          width: 100%;
+        }
+        .headerList {
+          height: 30px;
+        }
+        img {
+          cursor: pointer;
+          margin-top: 3px;
+          height: 48px;
+          width: 48px;
+          border-radius: 5px;
+          transition: 0.15s ease-in-out;
+          &:hover {
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+          }
+        }
+        .fileWrapper {
+          border: 1px solid rgba(0, 0, 0, 0.3);
+          border-radius: 10px;
+          font-size: 14px;
+          color: gray;
+          padding: 5px 5px;
+          height: 33.25px;
+          transition: 0.15s ease-in-out;
+          &:hover {
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+          }
+          .file-load {
+            visibility: hidden;
+          }
+        }
+      }
+      td:first-child {
+        width: 30%;
+      }
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+
+    td {
+      padding: 20px 0px;
+      // height: 48px;
+      // width: 50%;
+      text-align: start;
+    }
+  }
+  h1 {
+    letter-spacing: 4px;
+    font-size: 30px;
+    margin-bottom: 2%;
+  }
+}
