@@ -16,9 +16,10 @@
 
       td:last-child {
         width: 70%;
-        button {
-          text-align: start;
+        select {
+          -webkit-appearance: initial;
           padding: 10px;
+          text-align: start;
           // height: 70%;
           width: 100%;
           position: relative;

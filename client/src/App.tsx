@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import AdminPage from './pages/AdminPage';
 import './index.css';
 import CatalogPage from './pages/CatalogPage';
@@ -7,8 +7,26 @@ import ProductPage from './pages/ProductPage';
 import TentsPage from './pages/TentsPage';
 import EditPage from './pages/EditPage';
 import { Routes, Route } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from './hooks/redux';
+
+import { fetchGaranties } from './store/reducers/GaranteeSlice';
+import { fetchCountries } from './store/reducers/CountrySlice';
+import { fetchMaterialArcs } from './store/reducers/MaterialArcSlice';
+import { fetchMaterialsBottom } from './store/reducers/MaterialBottomSlice';
+import { fetchSeasons } from './store/reducers/SeasonsSlice';
+import { fetchPlacecounts } from './store/reducers/PlacecountSlice';
 
 function App() {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(fetchGaranties());
+    dispatch(fetchCountries());
+    dispatch(fetchMaterialArcs());
+    dispatch(fetchMaterialsBottom());
+    dispatch(fetchSeasons());
+    dispatch(fetchPlacecounts());
+  }, []);
+
   return (
     <Routes>
       <Route path={'/admin'} element={<AdminPage></AdminPage>} />

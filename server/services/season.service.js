@@ -22,4 +22,4 @@ class SeasonServices {
   }
 }
 
-module.ezxports = new SeasonServices();
+module.exports = new SeasonServices();

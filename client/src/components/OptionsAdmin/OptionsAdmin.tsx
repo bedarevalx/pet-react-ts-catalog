@@ -1,15 +1,27 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import styles from './/OptionsAdmin.module.scss';
+import axios from '../../axiosInstance';
 
 export enum OptionVariant {
-  season = 'сезон',
-  placecount = 'кол-во мест',
-  color = 'цвет',
-  garantee = 'срок гарантии',
-  materialArc = 'материал дуг',
-  materialBottom = 'материал дна',
-  waterproofTent = 'водонепр. тента',
-  waterproofBottom = 'водонепр. дна',
+  country = 'country',
+  season = 'season',
+  placecount = 'placecount',
+  color = 'color',
+  garantee = 'garantee',
+  materialArc = 'material-arc',
+  materialBottom = 'material-bottom',
+  // waterproofTent = 'waterproof_bottom',
+  // waterproofBottom = 'водонепр. дна',
+}
+
+export enum DataVariant {
+  year = 'year',
+  count = 'count',
+  name = 'name',
+  color = 'color',
+  time = 'time',
+  // waterproofTent = 'waterproof_bottom',
+  // waterproofBottom = 'водонепр. дна',
 }
 
 interface OptionsAdminProps {
@@ -17,6 +29,8 @@ interface OptionsAdminProps {
   title: string;
   label: string;
   placeholder: string;
+  data: DataVariant;
+  handleCreate: (data: string) => void;
 }
 
 const OptionsAdmin: FC<OptionsAdminProps> = ({
@@ -24,7 +38,25 @@ const OptionsAdmin: FC<OptionsAdminProps> = ({
   label,
   type,
   placeholder,
+  data,
+  handleCreate,
 }) => {
+  const [inputValue, setInputValue] = useState<string>('');
+
+  const changeInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+  };
+
+  const submitData = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    let value;
+    type === 'placecount' || type === 'season' || type === 'garantee'
+      ? (value = Number(inputValue))
+      : (value = inputValue);
+    handleCreate(inputValue);
+    // const response = await axios.post(`/api/${type}`, { [data]: value });
+    // console.log(response);
+  };
+
   return (
     <>
       <section>
@@ -33,84 +65,27 @@ const OptionsAdmin: FC<OptionsAdminProps> = ({
           <tr>
             <td>{label}</td>
             <td>
-              <input type='text' placeholder={placeholder} />
+              <input
+                value={inputValue}
+                onChange={changeInputHandler}
+                type={
+                  type === 'placecount' ||
+                  type === 'season' ||
+                  type === 'garantee'
+                    ? 'number'
+                    : 'text'
+                }
+                placeholder={placeholder}
+              />
             </td>
           </tr>
         </table>
         <div className={`${styles.btnWrapper}`}>
-          <button className={`${styles.addButton}`}>Добавить</button>
+          <button className={`${styles.addButton}`} onClick={submitData}>
+            Добавить
+          </button>
         </div>
       </section>
-      {/* <section className='new-garantee-time'>
-        <h1>Добавить новое время гарантии</h1>
-        <table>
-          <tr>
-            <td className='name'>Время гарантии</td>
-            <td className='value'>
-              <input type='number' placeholder='Введите время гарантии' />
-            </td>
-          </tr>
-        </table>
-        <div className='btn-wrapper'>
-          <button className='add-button'>Добавить</button>
-        </div>
-      </section>
-      <section className='new-placecount'>
-        <h1>Добавить новое кол-во мест</h1>
-        <table>
-          <tr>
-            <td className='name'>Кол-во мест</td>
-            <td className='value'>
-              <input type='number' placeholder='Введите кол-во мест' />
-            </td>
-          </tr>
-        </table>
-        <div className='btn-wrapper'>
-          <button className='add-button'>Добавить</button>
-        </div>
-      </section>
-      <section className='new-garantee-time'>
-        <h1>Добавить новый сезон</h1>
-        <table>
-          <tr>
-            <td className='name'>Сезон</td>
-            <td className='value'>
-              <input type='number' placeholder='Введите сезон' />
-            </td>
-          </tr>
-        </table>
-        <div className='btn-wrapper'>
-          <button className='add-button'>Добавить</button>
-        </div>
-      </section>
-      <section className='new-material-bottom'>
-        <h1>Добавить новый материал дна</h1>
-        <table>
-          <tr>
-            <td className='name'>Материал дна</td>
-            <td className='value'>
-              <input type='text' placeholder='Введите материал дна' />
-            </td>
-          </tr>
-        </table>
-        <div className='btn-wrapper'>
-          <button className='add-button'>Добавить</button>
-        </div>
-      </section>
-      <section className='new-material-tent'>
-        <h1>Добавить новый материл тента</h1>
-        <table>
-          <tr>
-            <td className='name'>Материал тента</td>
-            <td className='value'>
-              <input type='number' placeholder='Введите материал тента' />
-            </td>
-          </tr>
-        </table>
-        <div className='btn-wrapper'>
-          <button className='add-button'>Добавить</button>
-        </div>
-      </section> */}
     </>
   );
 };

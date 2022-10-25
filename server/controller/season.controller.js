@@ -1,4 +1,4 @@
-const seasonServices = require('../services/season.services');
+const seasonServices = require('../services/season.service');
 
 class SeasonController {
   async createSeason(req, res) {

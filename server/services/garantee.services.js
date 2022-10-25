@@ -3,7 +3,7 @@ const db = require('../db');
 class GaranteeServices {
   async createGarantee(time) {
     const newContry = await db.query(
-      'INSERT INTO garantee (name) values ($1) RETURNING *',
+      'INSERT INTO garantee (time) values ($1) RETURNING *',
       [time],
     );
     return newContry.rows[0];

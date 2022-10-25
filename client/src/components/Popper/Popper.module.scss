@@ -1,4 +1,4 @@
-.popper {
+.detailsElements {
   position: absolute;
   width: 70%;
   padding: 5px;
@@ -16,4 +16,8 @@
       background: rgba(0, 0, 0, 0.1);
     }
   }
+}
+
+.errorSelect {
+  border: 2px solid red !important;
 }

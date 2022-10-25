@@ -6,8 +6,8 @@ class ParagraphServices {
     paragraphs.map(async (paragraph) => {
       newParagraphs.push(
         await db.query(
-          'INSERT INTO paragraph (id_description, content) values ($1,$2) RETURNING *',
-          [descriptionId, paragraph.id],
+          'INSERT INTO paragraph (id_description, content, title) values ($1,$2, $3) RETURNING *',
+          [descriptionId, paragraph.content, paragraph.title],
         ).rows[0],
       );
     });
