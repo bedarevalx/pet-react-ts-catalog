@@ -5,7 +5,7 @@ class MaterialArcController {
     const { name } = req.body;
     const newMaterialArc = await materialArcServices.createMaterialArc(name);
     console.log(newMaterialArc);
-    res.json(newMaterialArc);
+    res.json(newMaterialArc, 201);
   }
   async getAllMaterialsArc(req, res) {
     const allMaterials = await materialArcServices.getAllMaterialsArc();

@@ -1,37 +1,41 @@
-import React from 'react';
+import React, { FC, useState } from 'react';
 import styles from './/Slider.module.scss';
 
-const Slider = () => {
+interface SliderProps {
+  imagesPaths: string[];
+  currentImageID: number;
+  setCurrentImageID(value: number): void;
+}
+
+const Slider: FC<SliderProps> = ({
+  imagesPaths,
+  currentImageID,
+  setCurrentImageID,
+}) => {
+  const handleNextClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    currentImageID === imagesPaths.length - 1
+      ? setCurrentImageID(0)
+      : setCurrentImageID(currentImageID + 1);
+  };
+  const handlePrevClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    currentImageID === 0
+      ? setCurrentImageID(imagesPaths.length - 1)
+      : setCurrentImageID(currentImageID - 1);
+  };
+
   return (
     <div className={`${styles.slider} ${styles.card}`}>
-      <img
-        className={`${styles.item}`}
-        src='/images/products/tents/tent3.png'></img>
-      <div
-        className={`${styles.item}`}
-        // style="
-        //   background-image: url('/assets/images/products/tents/tent3.png');
-        // "
-      ></div>
-      <div
-        className={`${styles.item}`}
-        // style="
-        //   background-image: url('/assets/images/products/tents/tent1.png');
-        // "
-      ></div>
-      <a
+      <img className={`${styles.item}`} src={imagesPaths[currentImageID]}></img>
+      <button
         className={`${styles.arrow} ${styles.previous}`}
-        // onClik="previousSlide()"
-      >
+        onClick={handlePrevClick}>
         <span>{`<`}</span>
-      </a>
-      <a
+      </button>
+      <button
         className={`${styles.arrow} ${styles.next}`}
-
-        // onClik="nextSlide()"
-      >
+        onClick={handleNextClick}>
         <span>{`>`}</span>
-      </a>
+      </button>
     </div>
   );
 };

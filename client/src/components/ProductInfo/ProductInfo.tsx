@@ -1,10 +1,35 @@
-import React from 'react';
+import React, { FC, useState } from 'react';
 import styles from './ProductInfo.module.scss';
 import bootstrap from '../../assets/bootstrap.module.scss';
 import Slider from '../Slider/Slider';
 import { Link } from 'react-router-dom';
+import { IOption, ITent } from '../../types/types';
 
-const ProductInfo = () => {
+interface ProductInfoProps {
+  id: number;
+  tent: ITent | undefined;
+  garanties: IOption[];
+  countries: IOption[];
+  matArc: IOption[];
+  matBot: IOption[];
+  placecounts: IOption[];
+  seasons: IOption[];
+  colors: IOption[];
+}
+
+const ProductInfo: FC<ProductInfoProps> = ({
+  id,
+  tent,
+  countries,
+  matArc,
+  matBot,
+  placecounts,
+  seasons,
+  garanties,
+  colors,
+}) => {
+  const [currentImageID, setCurrentImageID] = useState<number>(0);
+
   return (
     <>
       <section className={`${styles.cardInfo} ${bootstrap.row}`}>
@@ -12,30 +37,38 @@ const ProductInfo = () => {
           className={`${bootstrap['col-12']} ${bootstrap['col-xl-1']} ${bootstrap['col-md-8']} ${bootstrap['order-xl-0']} ${bootstrap['order-3']}  ${bootstrap['order-md-3']}`}>
           <div className={`${styles.thumbs}`}>
             <ul>
-              <li>
-                <img src='/images/products/tents/tent1.png' alt='ph1' />
-              </li>
-              <li>
-                <img src='/images/products/tents/tent2.jpeg' alt='ph2' />
-              </li>
-              <li>
-                <img src='/images/products/tents/tent3.png' alt='ph3' />
-              </li>
-              <li>
-                <img src='/images/products/tents/tent4.jpeg' alt='ph4' />
-              </li>
+              {tent?.photoUrls.map((imagePath, index) => (
+                <li key={index}>
+                  <img
+                    src={'http://localhost:5050/' + imagePath}
+                    alt='thumbnail'
+                    onClick={() => {
+                      setCurrentImageID(index);
+                    }}
+                  />
+                </li>
+              ))}
             </ul>
           </div>
         </div>
         <div
           className={`${bootstrap['col-md-8']} ${bootstrap['col-xl-7']} ${bootstrap['col-12']}  `}>
-          <Slider />
+          {tent && (
+            <Slider
+              imagesPaths={tent?.photoUrls.map(
+                (image) => ('http://localhost:5050/' + image) as string,
+              )}
+              currentImageID={currentImageID}
+              setCurrentImageID={setCurrentImageID}
+            />
+          )}
         </div>
         <div
           className={`${bootstrap['col-md-4']} ${bootstrap['col-12']} ${bootstrap['order-last']} ${bootstrap['order-md-2']}`}>
           <div className={`${styles.info}`}>
             <div className={`${styles.title}`}>
-              <h2>OUTVENTURE</h2>
+              <h2>{tent?.manufacturer}</h2>
+
               <img
                 src='/images/bookmark-dis2.svg'
                 alt=''
@@ -43,16 +76,17 @@ const ProductInfo = () => {
               />
             </div>
             <div className={`${styles.priceInfo}`}>
-              <h3>Палатка 3-местная Outventure Dome 3</h3>
-              <p>Артикль: 4ILZ2YGBXD</p>
-              <h1 className={`${styles.price}`}>3779 ₽</h1>
-              <p>цвет: темно-зеленый</p>
-              <a className={`${styles.pChars}`} href='#chars'>
-                характеристики
-              </a>
-              <Link to={'/edit'} className={`${styles.pChars}`}>
-                редактировать
-              </Link>
+              <h3>{tent?.name}</h3>
+              <p>Артикль: {tent?.article}</p>
+              <h1 className={`${styles.price}`}>{tent?.price} ₽</h1>
+              <p>
+                цвет:{' '}
+                {colors.filter((color) => color.id === tent?.idColor)[0]?.name}
+              </p>
+              <div className={`${styles.hrefs}`}>
+                <a href='#chars'>характеристики</a>
+                <Link to={'/edit/' + id}>редактировать</Link>
+              </div>
             </div>
           </div>
         </div>
@@ -60,30 +94,14 @@ const ProductInfo = () => {
       <section className={`${styles.description} ${bootstrap.row}`}>
         <div className={`${bootstrap['col-12']} ${bootstrap['col-lg-8']}`}>
           <h1>ОПИСАНИЕ</h1>
-          <p>
-            Классическая трехместная туристическая палатка Outventure подойдет
-            для непродолжительных стоянок. Модель с продуманной конструкцией
-            отличается простотой установки, компактностью и малым весом.
-          </p>
+          <p>{tent?.description}</p>
           <ul>
-            <li>
-              <h4>ВОДОНЕПРОНИЦАЕМОСТЬ</h4>
-              <p>
-                Вентиляционные окна и вход с москитной сеткой улучшают
-                вентиляцию.
-              </p>
-            </li>
-            <li>
-              <h4>ВЕНТИЛЯЦИЯ</h4>
-              <p>Конструкция "полусфера" способна выдержать сильный ветер.</p>
-            </li>
-            <li>
-              <h4>ВЕТРОУСТОЙЧИВОСТЬ</h4>
-              <p>
-                Благодаря тенту с показателем водонепроницаемости 3000 мм в.ст.
-                и проклеенным швам палатка долго не промокает.
-              </p>
-            </li>
+            {tent?.paragraphs.map((paragraph, index) => (
+              <li key={index}>
+                <h4>{paragraph.header}</h4>
+                <p>{paragraph.content}</p>
+              </li>
+            ))}
           </ul>
         </div>
       </section>
@@ -96,15 +114,32 @@ const ProductInfo = () => {
             </tr>
             <tr>
               <td>Срок гарантии</td>
-              <td>2 года</td>
+              <td>
+                {
+                  garanties.filter(
+                    (garantee) => garantee.id === tent?.idGarantee,
+                  )[0]?.time
+                }{' '}
+                года
+              </td>
             </tr>
             <tr>
               <td>Страна производства</td>
-              <td>Вьетнам</td>
+              <td>
+                {
+                  countries.filter((contry) => contry.id === tent?.idCountry)[0]
+                    ?.name
+                }
+              </td>
             </tr>
             <tr>
               <td>Сезон</td>
-              <td>2022</td>
+              <td>
+                {
+                  seasons.filter((season) => season.id === tent?.idSeason)[0]
+                    ?.year
+                }
+              </td>
             </tr>
           </table>
           <table>
@@ -113,27 +148,41 @@ const ProductInfo = () => {
             </tr>
             <tr>
               <td>Количество мест</td>
-              <td>3</td>
-            </tr>
-            <tr>
-              <td>Ветроустойчивость</td>
-              <td>Высокая</td>
+              <td>
+                {
+                  placecounts.filter(
+                    (placecount) => placecount.id === tent?.idPlacecount,
+                  )[0]?.count
+                }
+              </td>
             </tr>
             <tr>
               <td>Водонепроницаемость дна, мм.в.ст.</td>
-              <td>10000</td>
+              <td>{tent?.waterproofBot}</td>
             </tr>
             <tr>
               <td>Водонепроницаемость тента, мм.в.ст.</td>
-              <td>3000</td>
+              <td>{tent?.waterproofAwn}</td>
             </tr>
             <tr>
               <td>Материал дна</td>
-              <td>Полиэстер</td>
+              <td>
+                {
+                  matBot.filter(
+                    (material) => material.id === tent?.idMaterialBottom,
+                  )[0]?.name
+                }
+              </td>
             </tr>
             <tr>
               <td>Материал дуг</td>
-              <td>Фибергласс</td>
+              <td>
+                {
+                  matArc.filter(
+                    (material) => material.id === tent?.idMaterialArc,
+                  )[0]?.name
+                }
+              </td>
             </tr>
           </table>
         </div>

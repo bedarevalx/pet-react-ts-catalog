@@ -26,7 +26,7 @@ export const createMaterialArc = createAsyncThunk<IOption, string,{rejectValue: 
     'garantee/createMaterialArc',
     async function (name,{rejectWithValue}) {
         const response = await axios.post('/api/material-arc',{name});
-        if(response.status !== 200){
+        if(response.status !== 201){
             return rejectWithValue('Server error!')
         }
         const data = response.data;

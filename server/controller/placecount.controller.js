@@ -4,7 +4,7 @@ class PlacecountController {
   async createPlacecount(req, res) {
     const { count } = req.body;
     const newPlacecount = await placecountServices.createPlacecount(count);
-    res.json(newPlacecount);
+    res.json(newPlacecount, 201);
   }
   async getlAllPlacecounts(req, res) {
     const allPlacecount = await placecountServices.getlAllPlacecounts();

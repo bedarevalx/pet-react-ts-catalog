@@ -8,11 +8,19 @@ interface PopperProps {
   elements: IOption[];
   type: DataVariant;
   handleChange: (id: string) => void;
+  value: string;
 }
 
-const Popper: FC<PopperProps> = ({ title, elements, type, handleChange }) => {
+const Popper: FC<PopperProps> = ({
+  title,
+  elements,
+  type,
+  value,
+  handleChange,
+}) => {
   return (
     <select
+      value={value}
       onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
         handleChange(e.target.value)
       }>

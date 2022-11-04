@@ -26,7 +26,7 @@ export const createCountry = createAsyncThunk<IOption, string,{rejectValue: stri
     'garantee/createCountry',
     async function (name,{rejectWithValue}) {
         const response = await axios.post('/api/country',{name});
-        if(response.status !== 200){
+        if(response.status !== 201){
             return rejectWithValue('Server error!')
         }
         const data = response.data;

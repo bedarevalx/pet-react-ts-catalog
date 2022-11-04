@@ -4,7 +4,7 @@ class SeasonController {
   async createSeason(req, res) {
     const { year } = req.body;
     const newSeason = await seasonServices.createSeason(year);
-    res.json(newSeason);
+    res.json(newSeason, 201);
   }
   async getlAllSeasons(req, res) {
     const allSeason = await seasonServices.getlAllSeasons();

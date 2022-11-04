@@ -4,7 +4,7 @@ class GaranteeController {
   async createGarantee(req, res) {
     const { time } = req.body;
     const newGarantee = await garanteeServices.createGarantee(time);
-    res.json(newGarantee);
+    res.json(newGarantee, 201);
   }
   async getAllGaranties(req, res) {
     const allGaranties = await garanteeServices.getAllGaranties();

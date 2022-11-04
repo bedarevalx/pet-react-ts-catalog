@@ -1,4 +1,4 @@
-import {combineReducers, configureStore, getDefaultMiddleware} from '@reduxjs/toolkit'
+import {combineReducers, configureStore} from '@reduxjs/toolkit'
 import seasonReducer from './reducers/SeasonsSlice';
 
 import garanteeReducer from './reducers/GaranteeSlice'
@@ -6,8 +6,9 @@ import countryReducer from './reducers/CountrySlice'
 import materialArcReducer from './reducers/MaterialArcSlice'
 import materialBottomReducer from './reducers/MaterialBottomSlice'
 import placecountReducer from './reducers/PlacecountSlice'
+import colorReducer from './reducers/ColorSlice'
 
-
+import tentReducer  from './reducers/TentSlice'
 
 const rootReducer = combineReducers({
     garanteeReducer,
@@ -15,7 +16,9 @@ const rootReducer = combineReducers({
     materialArcReducer,
     materialBottomReducer,
     placecountReducer,
-    seasonReducer
+    seasonReducer,
+    tentReducer,
+    colorReducer,
 })
 
 export const setupStore = ()=>{

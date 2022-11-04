@@ -7,7 +7,7 @@ class MaterialBottomController {
       name,
     );
     console.log(newMaterialBottom);
-    res.json(newMaterialBottom);
+    res.json(newMaterialBottom, 201);
   }
   async getAllMaterialsBottom(req, res) {
     const allMaterials = await materialBottomServices.getAllMaterialsBottom();

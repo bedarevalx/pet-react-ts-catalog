@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import ProductList from '../components/ProductList/ProductList';
 import MainLayout from '../layouts/MainLayout';
-import { IProduct } from '../types/types';
+import { ICard, ITent } from '../types/types';
 
 const Tents = () => {
-  const [products, setProducts] = useState<IProduct[]>([]);
+  const [products, setProducts] = useState<ICard[]>([]);
   return (
     <MainLayout>
-      <ProductList products={products}></ProductList>
+      <ProductList products={products} isLoading={true}></ProductList>
     </MainLayout>
   );
 };

@@ -53,12 +53,17 @@
     p {
       margin-top: 5%;
     }
-    .pChars {
-      color: blue;
-      cursor: pointer;
-      text-decoration: none;
-      &:hover {
-        text-decoration: underline;
+    .hrefs {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      a {
+        color: blue;
+        cursor: pointer;
+        text-decoration: none;
+        &:hover {
+          text-decoration: underline;
+        }
       }
     }
   }

@@ -1,33 +1,24 @@
-import React, { FC, useRef, useState } from 'react';
-import { useAppSelector } from '../../hooks/redux';
-import { IOption, IProduct } from '../../types/types';
+import React, { FC, useEffect, useRef, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { IOption, IParagraph, IProduct, ITent } from '../../types/types';
 import Popper from '../Popper/Popper';
 import styles from './/ProductAdmin.module.scss';
 import { DataVariant } from '../OptionsAdmin/OptionsAdmin';
+import { createTent, editTent } from '../../store/reducers/TentSlice';
+import { useParams } from 'react-router-dom';
+import axios from '../../axiosInstance';
 
 interface ProductAdminProps {
-  product?: IProduct;
+  product?: ITent | undefined;
 }
 
-const windProofOptions: IOption[] = [
-  {
-    id: 1,
-    name: 'Высокая',
-  },
-  {
-    id: 2,
-    name: 'Средняя',
-  },
-  {
-    id: 3,
-    name: 'Низкая',
-  },
-];
-
 const ProductAdmin: FC<ProductAdminProps> = ({ product }) => {
+  const dispatch = useAppDispatch();
+  const { id } = useParams();
   //store data
   const { garanties } = useAppSelector((state) => state.garanteeReducer);
   const { countries } = useAppSelector((state) => state.countryReducer);
+  const { colors } = useAppSelector((state) => state.colorReducer);
   const { materials: materialsArc } = useAppSelector(
     (state) => state.materialArcReducer,
   );
@@ -38,53 +29,154 @@ const ProductAdmin: FC<ProductAdminProps> = ({ product }) => {
   const { seasons } = useAppSelector((state) => state.seasonReducer);
 
   //input states
-  const [inputParagraphsCount, setInputParagraphsCount] = useState<number>(1);
-  const [inputName, setInputName] = useState('');
-  const [inputManufacturer, setInputManufacturer] = useState('');
-  const [inputArticle, setInputArticle] = useState('');
-  const [inputDescription, setInputDescription] = useState('');
+  const [inputParagraphsCount, setInputParagraphsCount] = useState<number>(
+    product ? product?.paragraphs?.length : 1,
+  );
+  const [inputName, setInputName] = useState(product ? product.name : '');
+  const [inputManufacturer, setInputManufacturer] = useState(
+    product ? product.manufacturer : '',
+  );
+  const [inputArticle, setInputArticle] = useState(
+    product ? product.article : '',
+  );
+  const [inputDescription, setInputDescription] = useState(
+    product ? product.description : '',
+  );
   const [inputColor, setInputColor] = useState('');
-  const [inputWaterproofBot, setInputWaterproofBot] = useState('');
-  const [inputWaterproofAwn, setInputWaterproofAwn] = useState('');
+  const [inputWaterproofBot, setInputWaterproofBot] = useState(
+    product ? product.waterproofBot : '',
+  );
+  const [inputWaterproofAwn, setInputWaterproofAwn] = useState(
+    product ? product.waterproofAwn : '',
+  );
+  const [inputPrice, setInputPrice] = useState(product ? product.price : '');
+  const [uploadedFiles, setUploadedFiles] = useState<string[]>([]);
 
   //select states
-  const [selectedGarantee, setSelectedGarantee] = React.useState('');
-  const [selectedCountry, setSelectedCountry] = React.useState('');
-  const [selectedMatArc, setSelectedMatArc] = React.useState('');
-  const [selectedMatBottom, setSelectedMatBottom] = React.useState('');
-  const [selectedPlacecount, setSelectedPlacecount] = React.useState('');
-  const [selectedColor, setSelectedColor] = React.useState('');
-  const [selectedSeason, setSelectedSeason] = React.useState('');
-  // const [selectedWindProof, setSelectedWindProof] = React.useState('');
+  const [selectedGarantee, setSelectedGarantee] = React.useState(
+    product ? product.idGarantee : '',
+  );
+  const [selectedCountry, setSelectedCountry] = React.useState(
+    product ? product.idCountry : '',
+  );
+  const [selectedMatArc, setSelectedMatArc] = React.useState(
+    product ? product.idMaterialArc : '',
+  );
+  const [selectedMatBottom, setSelectedMatBottom] = React.useState(
+    product ? product.idMaterialBottom : '',
+  );
+  const [selectedPlacecount, setSelectedPlacecount] = React.useState(
+    product ? product.idPlacecount : '',
+  );
+  const [selectedColor, setSelectedColor] = React.useState(
+    product ? product.idColor : '',
+  );
+  const [selectedSeason, setSelectedSeason] = React.useState(
+    product ? product.idSeason : '',
+  );
 
   //refs
   const paragraphsRef = useRef<HTMLTableCellElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const toBase64 = (file: File) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+
+  const onFileInputChange = async (files: FileList | null) => {
+    console.log('hahah');
+    if (!files) {
+      return;
+    }
+    const base64Files: string[] = [];
+
+    for (let i = 0; i < files.length; i++) {
+      base64Files.push((await toBase64(files.item(i) as File)) as string);
+    }
+    console.log(base64Files);
+
+    setUploadedFiles((prev) => [...prev, ...base64Files]);
+  };
+
+  function blobToBase64(blob: Blob) {
+    return new Promise((resolve, _) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+      reader.readAsDataURL(blob);
+    });
+  }
+
+  const handleDeleteImage = (index: number) => {
+    setUploadedFiles((prev) => prev.filter((prevImage, i) => i !== index));
+  };
+
+  useEffect(() => {
+    async function fetchImages() {
+      if (!product) return;
+      console.log('have product');
+      const responses = await Promise.all(
+        product.photoUrls.map(
+          async (photoUrl) =>
+            await axios.get(`${photoUrl}`, { responseType: 'blob' }),
+        ),
+      );
+
+      const base64Images = await Promise.all(
+        responses.map(async (response) => await blobToBase64(response.data)),
+      );
+      console.log(base64Images);
+      setUploadedFiles(base64Images as string[]);
+    }
+
+    fetchImages();
+  }, []);
+
   const handleSubmit = () => {
-    console.log(selectedGarantee);
-    // console.log(selectedColor);
-    console.log(selectedMatArc);
-    console.log(selectedMatBottom);
-    console.log(selectedPlacecount);
-    console.log(selectedSeason);
-    console.log(selectedCountry);
+    const paragraphs: IParagraph[] = [];
+    if (paragraphsRef.current) {
+      const items = Array.from(
+        paragraphsRef.current.children,
+      ) as unknown as HTMLCollectionOf<HTMLInputElement>;
 
-    console.log(inputName);
-    console.log(inputManufacturer);
-    console.log(inputArticle);
-    console.log(inputDescription);
-    console.log(inputColor);
-    console.log(inputWaterproofAwn);
-    console.log(inputWaterproofBot);
+      for (let i = 0; i < items.length - 1; i += 2) {
+        paragraphs.push({
+          header: items[i].value,
+          content: items[i + 1].value,
+        });
+      }
+    }
+    const newTent: ITent = {
+      article: inputArticle,
+      manufacturer: inputManufacturer,
+      name: inputName,
+      price: Number(inputPrice),
+      paragraphs: paragraphs,
+      description: inputDescription,
+      waterproofBot: Number(inputWaterproofBot),
+      waterproofAwn: Number(inputWaterproofAwn),
+      idGarantee: selectedGarantee,
+      idPlacecount: selectedPlacecount,
+      idCountry: selectedCountry,
+      idMaterialBottom: selectedMatBottom,
+      idMaterialArc: selectedMatArc,
+      idSeason: selectedSeason,
+      idColor: selectedColor,
+      photoUrls: uploadedFiles,
+    };
+    console.log(newTent.photoUrls);
 
-    // console.log(selectedWindProof);
-    console.log(paragraphsRef.current?.children);
+    product
+      ? dispatch(editTent({ tent: newTent, id: id }))
+      : dispatch(createTent(newTent));
   };
 
   return (
     <>
-      <h1>{product ? 'Добавить новую палатку' : 'Редактирование'}</h1>
+      <h1>{!product ? 'Добавить новую палатку' : 'Редактирование'}</h1>
       <table>
         <tr>
           <td>Название</td>
@@ -125,6 +217,19 @@ const ProductAdmin: FC<ProductAdminProps> = ({ product }) => {
             />
           </td>
         </tr>
+        <tr>
+          <td>Цена</td>
+          <td>
+            <input
+              type='number'
+              value={inputPrice}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setInputPrice(e.target.value)
+              }
+              placeholder='Введите цену'
+            />
+          </td>
+        </tr>
         <tr className={`${styles.photos}`}>
           <td>Фотографии</td>
           <td className={`${styles.photos}`}>
@@ -135,15 +240,23 @@ const ProductAdmin: FC<ProductAdminProps> = ({ product }) => {
               <input
                 ref={fileInputRef}
                 type='file'
+                accept='image/png, image/gif, image/jpeg'
                 className={`${styles.fileLoad}`}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  onFileInputChange(e.target.files)
+                }
                 placeholder='Введите значение'
                 multiple
               />
             </div>
             <div className={`${styles.uploadedPhotos}`}>
-              <img src='images/products/tents/tent1.png' alt='' />
-              <img src='images/products/tents/tent2.jpeg' alt='' />
-              <img src='images/products/tents/tent3.png' alt='' />
+              {uploadedFiles.map((photo, index) => (
+                <img
+                  src={photo}
+                  alt=''
+                  onClick={() => handleDeleteImage(index)}
+                />
+              ))}
             </div>
           </td>
         </tr>
@@ -152,6 +265,7 @@ const ProductAdmin: FC<ProductAdminProps> = ({ product }) => {
           <td>
             <textarea
               value={inputDescription}
+              rows={4}
               onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
                 setInputDescription(e.target.value)
               }
@@ -163,15 +277,23 @@ const ProductAdmin: FC<ProductAdminProps> = ({ product }) => {
           <td className={`${styles.items} `} ref={paragraphsRef}>
             {new Array(inputParagraphsCount)
               .fill(inputParagraphsCount)
-              .map((count) => {
+              .map((count, index) => {
                 return (
                   <>
                     <input
                       className={`${styles.headerList}`}
                       type='text'
                       placeholder='Введите подзаголовок'
+                      defaultValue={
+                        product ? product?.paragraphs[index]?.header : ''
+                      }
                     />
-                    <textarea placeholder='Введите пункт описания продукта'></textarea>
+                    <textarea
+                      rows={4}
+                      placeholder='Введите пункт описания продукта'
+                      defaultValue={
+                        product ? product?.paragraphs[index]?.content : ''
+                      }></textarea>
                   </>
                 );
               })}
@@ -190,6 +312,7 @@ const ProductAdmin: FC<ProductAdminProps> = ({ product }) => {
               type={DataVariant.time}
               title='Выберите срок гарантии'
               handleChange={setSelectedGarantee}
+              value={selectedGarantee}
               elements={garanties}></Popper>
           </td>
         </tr>
@@ -200,6 +323,7 @@ const ProductAdmin: FC<ProductAdminProps> = ({ product }) => {
               type={DataVariant.name}
               title='Выберите страну производства'
               handleChange={setSelectedCountry}
+              value={selectedCountry}
               elements={countries}></Popper>
           </td>
         </tr>
@@ -210,6 +334,7 @@ const ProductAdmin: FC<ProductAdminProps> = ({ product }) => {
               type={DataVariant.year}
               title='Выберите сезон'
               handleChange={setSelectedSeason}
+              value={selectedSeason}
               elements={seasons}></Popper>
           </td>
         </tr>
@@ -220,19 +345,11 @@ const ProductAdmin: FC<ProductAdminProps> = ({ product }) => {
               type={DataVariant.count}
               title='Выберите кол-во мест'
               handleChange={setSelectedPlacecount}
+              value={selectedPlacecount}
               elements={placecounts}></Popper>
           </td>
         </tr>
-        {/* <tr>
-          <td>Ветроустойч.</td>
-          <td>
-            <Popper
-              type={DataVariant.name}
-              title='Выберите ветроустойчивость'
-              handleChange={setSelectedWindProof}
-              elements={windProofOptions}></Popper>
-          </td>
-        </tr> */}
+
         <tr>
           <td>Водонепр. дна</td>
           <td>
@@ -262,14 +379,12 @@ const ProductAdmin: FC<ProductAdminProps> = ({ product }) => {
         <tr>
           <td>Цвет</td>
           <td>
-            <input
-              type='text'
-              value={inputColor}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setInputColor(e.target.value)
-              }
-              placeholder='Введите цвет'
-            />
+            <Popper
+              type={DataVariant.name}
+              title='Выберите цвет'
+              handleChange={setSelectedColor}
+              value={selectedColor}
+              elements={colors}></Popper>
           </td>
         </tr>
         <tr>
@@ -279,6 +394,7 @@ const ProductAdmin: FC<ProductAdminProps> = ({ product }) => {
               type={DataVariant.name}
               title='Выберите материал дна'
               handleChange={setSelectedMatBottom}
+              value={selectedMatBottom}
               elements={materialsBottom}></Popper>
           </td>
         </tr>
@@ -289,13 +405,14 @@ const ProductAdmin: FC<ProductAdminProps> = ({ product }) => {
               type={DataVariant.name}
               title='Выберите материал дуг'
               handleChange={setSelectedMatArc}
+              value={selectedMatArc}
               elements={materialsArc}></Popper>
           </td>
         </tr>
       </table>
       <div className={`${styles.btnWrapper}`}>
         <button onClick={handleSubmit} className={`${styles.addButton}`}>
-          Добавить
+          {product ? 'Сохранить' : 'Добавить'}
         </button>
       </div>
     </>

@@ -10,6 +10,7 @@ import { createMaterialArc } from '../../store/reducers/MaterialArcSlice';
 import { createMaterialBottom } from '../../store/reducers/MaterialBottomSlice';
 import { createPlacecount } from '../../store/reducers/PlacecountSlice';
 import { createSeason } from '../../store/reducers/SeasonsSlice';
+import { createColor } from '../../store/reducers/ColorSlice';
 
 const AdminPanel = () => {
   const product: IProduct = { imgSetPath: '', title: '', price: 1 };
@@ -20,14 +21,14 @@ const AdminPanel = () => {
   return (
     <>
       <div className={`${styles.adminList}`}>
-        <ProductAdmin product={product} />
+        <ProductAdmin />
         <OptionsAdmin
           type={OptionVariant.color}
           title={'Добавить новый цвет'}
           label={'Цвет'}
           placeholder={'Введите новый цвет'}
           data={DataVariant.color}
-          handleCreate={(title) => dispatch(createGarantee(title))}
+          handleCreate={(title) => dispatch(createColor(title))}
         />
         <OptionsAdmin
           type={OptionVariant.garantee}

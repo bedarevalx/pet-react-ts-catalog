@@ -27,7 +27,7 @@ export const createSeason = createAsyncThunk<IOption, string,{rejectValue: strin
     'garantee/createSeason',
     async function (year,{rejectWithValue}) {
         const response = await axios.post('/api/season',{year});
-        if(response.status !== 200){
+        if(response.status !== 201){
             return rejectWithValue('Server error!')
         }
         const data = response.data;

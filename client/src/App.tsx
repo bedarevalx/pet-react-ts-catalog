@@ -15,6 +15,8 @@ import { fetchMaterialArcs } from './store/reducers/MaterialArcSlice';
 import { fetchMaterialsBottom } from './store/reducers/MaterialBottomSlice';
 import { fetchSeasons } from './store/reducers/SeasonsSlice';
 import { fetchPlacecounts } from './store/reducers/PlacecountSlice';
+import { fetchTents } from './store/reducers/TentSlice';
+import { fetchColors } from './store/reducers/ColorSlice';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -25,13 +27,14 @@ function App() {
     dispatch(fetchMaterialsBottom());
     dispatch(fetchSeasons());
     dispatch(fetchPlacecounts());
+    dispatch(fetchColors());
   }, []);
 
   return (
     <Routes>
       <Route path={'/admin'} element={<AdminPage></AdminPage>} />
       <Route path={'/'} element={<CatalogPage></CatalogPage>} />
-      <Route path={'/edit'} element={<EditPage></EditPage>} />
+      <Route path={'/edit/:id'} element={<EditPage></EditPage>} />
       <Route path={'/favorites'} element={<FavoritesPage></FavoritesPage>} />
       <Route path={'/tents'} element={<TentsPage></TentsPage>} />
       <Route path={'/product/:id'} element={<ProductPage></ProductPage>} />

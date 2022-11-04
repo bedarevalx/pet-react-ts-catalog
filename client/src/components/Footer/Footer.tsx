@@ -65,7 +65,7 @@ const Footer = () => {
         </li>
         <li>
           <a href='https://vk.com/bedarev01'>
-            <img src='images/vk.svg' alt='vklogo' />
+            <img src='/images/vk.svg' alt='vklogo' />
             <span>VK</span>
           </a>
         </li>

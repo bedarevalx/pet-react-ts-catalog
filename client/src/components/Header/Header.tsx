@@ -16,14 +16,29 @@ const Header = () => {
           </Link>
 
           <ul>
-            <Link to={'/tents'}>Палатки</Link>
-            <Link to={'/admin'}>Добавить</Link>
-
-            <Link to={'/favorites'}>Избранное</Link>
-            <Link to={'/login'}>Войти</Link>
+            <li>
+              <Link to={'/tents'}>
+                <button>Палатки</button>
+              </Link>
+            </li>
+            <li>
+              <Link to={'/admin'}>
+                <button>Добавить</button>
+              </Link>
+            </li>
+            <li>
+              <Link to={'/favorites'}>
+                <button>Избранное</button>
+              </Link>
+            </li>
+            <li>
+              <Link to={'/login'}>
+                <button>Войти</button>
+              </Link>
+            </li>
           </ul>
           <div className={`${styles.burgerMenu}`} tabIndex={0}>
-            <img src='images/menu.svg' alt='menu-icon' />
+            <img src='/images/menu.svg' alt='menu-icon' />
             <section className={`${styles.shortMenu}`}>
               <Link to={'/tents'} style={{ textDecoration: 'none' }}>
                 <span>Палатки</span>

@@ -4,7 +4,7 @@ class CountryController {
   async createCountry(req, res) {
     const { name } = req.body;
     const newCountry = await countryServices.createCountry(name);
-    res.json(newCountry);
+    res.json(newCountry, 201);
   }
   async getAllCountries(req, res) {
     const countries = await countryServices.getAllCountries();
