@@ -1,7 +1,6 @@
-import React, { FC, useRef, useState } from 'react';
-import { IOption, ISeason } from '../../types/types';
+import React, { FC } from 'react';
+import { IOption } from '../../types/types';
 import { DataVariant } from '../OptionsAdmin/OptionsAdmin';
-import styles from './Popper.module.scss';
 
 interface PopperProps {
   title: string;

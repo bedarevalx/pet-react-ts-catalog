@@ -14,7 +14,6 @@ const EditPanel = () => {
   useEffect(() => {
     async function fetchTent(id: number) {
       const response = await axios.get('/api/tent/' + id);
-      console.log(response);
       setTent(response.data);
       setIsLoading(false);
     }
@@ -23,10 +22,9 @@ const EditPanel = () => {
   }, []);
 
   const handleDelete = async () => {
-    console.log('delete');
     const response = await axios.delete('/api/tent?&id=' + id);
     if (response.status === 200) {
-      alert('Продукт успешно удалён!');
+      alert('Success Deleted!');
       navigate('/');
     } else {
       alert('Error with delete');

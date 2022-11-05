@@ -1,6 +1,6 @@
 
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { ICard, IOption, ITent } from "../../types/types";
+import { ICard, ITent } from "../../types/types";
 import axios from '../../axiosInstance'
 
 interface TentState{
@@ -53,9 +53,11 @@ export const createTent = createAsyncThunk<ITent, ITent,{rejectValue: string}>(
     async function (tent,{rejectWithValue}) {
         const response = await axios.post('/api/tent',{tent});
         if(response.status !== 201){
+            alert('Something went wrong!')
             return rejectWithValue('Server error!')
         }
         const data = response.data;
+        alert('Success!')
 
         return data as ITent;
     }
@@ -64,13 +66,14 @@ export const createTent = createAsyncThunk<ITent, ITent,{rejectValue: string}>(
 export const editTent = createAsyncThunk<ITent, any, {rejectValue: string}>(
     'tent/editTent',
     async function ({tent, id}: {tent:ITent, id:string }, {rejectWithValue}) {
-        console.log(tent,id);
         
         const response = await axios.put('/api/tent/'+id,{tent});
         if(response.status !== 200){
+            alert('Something went wrong!')
             return rejectWithValue('Server error!')
         }
         const data = response.data;
+        alert('Success!')
         return data as ITent;
     }
 )

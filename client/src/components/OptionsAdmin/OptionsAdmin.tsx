@@ -53,8 +53,6 @@ const OptionsAdmin: FC<OptionsAdminProps> = ({
       ? (value = Number(inputValue))
       : (value = inputValue);
     handleCreate(inputValue);
-    // const response = await axios.post(`/api/${type}`, { [data]: value });
-    // console.log(response);
   };
 
   return (

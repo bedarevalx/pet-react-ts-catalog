@@ -10,7 +10,6 @@ class PhotoService {
     return imagesUrls;
   }
   async savePhotos(tentId, photos) {
-    console.log(photos);
     if (!fs.existsSync('static/' + tentId)) {
       fs.mkdirSync('static/' + tentId);
     } else {
@@ -29,7 +28,6 @@ class PhotoService {
   }
   async deletePhotos(tentId) {
     fs.rmSync('static/' + tentId, { recursive: true });
-    // fs.rm('static/' + tentId, { recursive: true }, () => console.log('done'));
   }
 }
 

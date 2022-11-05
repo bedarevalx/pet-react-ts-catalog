@@ -2,12 +2,10 @@ const db = require('../db');
 
 class MaterialBottomServices {
   async createMaterialBottom(name) {
-    console.log(name);
     const newMaterialBottom = await db.query(
       'INSERT INTO material_bottom (name) values ($1) RETURNING *',
       [name],
     );
-    console.log(newMaterialBottom);
     return newMaterialBottom.rows[0];
   }
   async getAllMaterialsBottom() {

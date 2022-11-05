@@ -26,9 +26,11 @@ export const createGarantee = createAsyncThunk<IOption, string,{rejectValue: str
     async function (time,{rejectWithValue}) {
         const response = await axios.post('/api/garantee',{time});
         if(response.status !== 201){
+            alert('Something went wrong!')
             return rejectWithValue('Server error!')
         }
         const data = response.data;
+        alert('Success!')
 
         return data as IOption;
     }

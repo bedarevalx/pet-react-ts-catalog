@@ -27,9 +27,11 @@ export const createPlacecount = createAsyncThunk<IOption, string,{rejectValue: s
     async function (count,{rejectWithValue}) {
         const response = await axios.post('/api/placecount',{count});
         if(response.status !== 201){
+            alert('Something went wrong!')
             return rejectWithValue('Server error!')
         }
         const data = response.data;
+        alert('Success!')
 
         return data as IOption;
     }

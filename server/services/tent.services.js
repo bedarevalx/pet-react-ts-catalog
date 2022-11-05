@@ -4,7 +4,6 @@ const photoService = require('./photo.service');
 
 class TentServices {
   async createTent(tent) {
-    // console.log(tent);
     const {
       article,
       manufacturer,
@@ -40,7 +39,6 @@ class TentServices {
         idColor,
       ],
     );
-    console.log(newTent.rows[0]);
     return newTent.rows[0];
   }
   async getlAllTents() {
@@ -53,11 +51,9 @@ class TentServices {
       'SELECT id, name, price FROM tent OFFSET $1 LIMIT $2',
       [step * (page - 1), step],
     );
-    console.log(cards);
     const photoUrls = await Promise.all(
       cards.rows.map(async (tent) => await photoService.getPhotoUrls(tent.id)),
     );
-    console.log(photoUrls);
     cards.rows.map((card, index) => {
       card.imagePath = photoUrls[index][0];
     });
@@ -65,20 +61,17 @@ class TentServices {
   }
 
   async getTent(id) {
-    console.log(id);
     const tents = await db.query(
       'select tents.id, article, name, manufacturer, price, waterproof_awn as "waterproofAwn", waterproof_bot as "waterproofBot",  id_garantee as "idGarantee", id_placecount as "idPlacecount", id_country as "idCountry", id_material_bottom as "idMaterialBottom", id_material_arc as "idMaterialArc", id_season as "idSeason", description, id_color as "idColor" from tent as tents where tents.id = $1',
       [id],
     );
     const paragraphs = await paragraphServices.getParagraphsById(id);
     const photoUrls = await photoService.getPhotoUrls(id);
-    console.log(photoUrls);
     tents.rows[0].paragraphs = paragraphs;
     tents.rows[0].photoUrls = photoUrls;
     return tents.rows[0];
   }
   async deleteTent(id) {
-    console.log(id);
     try {
       await db.query('DELETE FROM tent WHERE id = $1', [id]);
       await photoService.deletePhotos(id);

@@ -21,7 +21,6 @@ class TentController {
   async getTent(req, res) {
     try {
       const { id } = req.params;
-      console.log(req.params);
       const tent = await tentServices.getTent(id);
       res.json(tent);
     } catch (error) {

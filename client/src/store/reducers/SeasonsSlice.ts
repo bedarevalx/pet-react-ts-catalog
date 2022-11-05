@@ -1,6 +1,5 @@
-import { IOption, ISeason } from "../../types/types";
+import { IOption } from "../../types/types";
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit"
-import {PayloadAction} from '@reduxjs/toolkit'
 import axios from '../../axiosInstance'
 
 
@@ -28,9 +27,11 @@ export const createSeason = createAsyncThunk<IOption, string,{rejectValue: strin
     async function (year,{rejectWithValue}) {
         const response = await axios.post('/api/season',{year});
         if(response.status !== 201){
+            alert('Something went wrong!')
             return rejectWithValue('Server error!')
         }
         const data = response.data;
+        alert('Success!')
 
         return data as IOption;
     }

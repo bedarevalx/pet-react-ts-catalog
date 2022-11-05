@@ -3,24 +3,23 @@ import ProductInfo from '../components/ProductInfo/ProductInfo';
 import MainLayout from '../layouts/MainLayout';
 import { ITent } from '../types/types';
 import axios from '../axiosInstance';
-import { useAppSelector } from '../hooks/redux';
 import { useParams } from 'react-router-dom';
+import useGetOptions from '../hooks/useGetOptions';
 
 const Product = () => {
   const params = useParams();
   const [tent, setTent] = useState<ITent>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const { garanties } = useAppSelector((state) => state.garanteeReducer);
-  const { countries } = useAppSelector((state) => state.countryReducer);
-  const { materials: matArc } = useAppSelector(
-    (state) => state.materialArcReducer,
-  );
-  const { materials: matBot } = useAppSelector(
-    (state) => state.materialBottomReducer,
-  );
-  const { placecounts } = useAppSelector((state) => state.placecountReducer);
-  const { seasons } = useAppSelector((state) => state.seasonReducer);
-  const { colors } = useAppSelector((state) => state.colorReducer);
+
+  const {
+    garanties,
+    countries,
+    colors,
+    materialsArc,
+    materialsBottom,
+    placecounts,
+    seasons,
+  } = useGetOptions();
 
   useEffect(() => {
     async function fetchTent(id: number) {
@@ -43,8 +42,8 @@ const Product = () => {
           countries={countries}
           placecounts={placecounts}
           seasons={seasons}
-          matArc={matArc}
-          matBot={matBot}
+          matArc={materialsArc}
+          matBot={materialsBottom}
           colors={colors}
         />
       )}

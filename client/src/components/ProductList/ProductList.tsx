@@ -1,10 +1,9 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import styles from './/ProductList.module.scss';
 import bootstrap from '../../assets/bootstrap.module.scss';
-import { ICard, IProduct, ITent } from '../../types/types';
+import { ICard } from '../../types/types';
 import Card from '../Card/Card';
 import Filters from '../Filters/Filters';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 
 interface ProductListProps {
   products: ICard[];

@@ -1,8 +1,3 @@
-export interface IProduct{
-    imgSetPath: string;
-    title: string;
-    price: number;
-}
 
 export interface IOption{
     id: string;
@@ -11,11 +6,6 @@ export interface IOption{
     count?: string;
     color?: string;
     time?: string;
-}
-
-export interface ISeason{
-    id: number;
-    year: string;
 }
 
 export interface IParagraph{

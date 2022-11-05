@@ -3,19 +3,28 @@ import styles from './/Filters.module.scss';
 import bootstrap from '../../assets/bootstrap.module.scss';
 import Popper from '../Popper/Popper';
 import { DataVariant } from '../OptionsAdmin/OptionsAdmin';
-import { useAppSelector } from '../../hooks/redux';
+import useGetOptions from '../../hooks/useGetOptions';
 
 const Filters = () => {
-  const { garanties } = useAppSelector((state) => state.garanteeReducer);
-  const { countries } = useAppSelector((state) => state.countryReducer);
-  const { materials: matArc } = useAppSelector(
-    (state) => state.materialArcReducer,
-  );
-  const { materials: matBot } = useAppSelector(
-    (state) => state.materialBottomReducer,
-  );
-  const { placecounts } = useAppSelector((state) => state.placecountReducer);
-  const { seasons } = useAppSelector((state) => state.seasonReducer);
+  // const { garanties } = useAppSelector((state) => state.garanteeReducer);
+  // const { countries } = useAppSelector((state) => state.countryReducer);
+  // const { materials: matArc } = useAppSelector(
+  //   (state) => state.materialArcReducer,
+  // );
+  // const { materials: matBot } = useAppSelector(
+  //   (state) => state.materialBottomReducer,
+  // );
+  // const { placecounts } = useAppSelector((state) => state.placecountReducer);
+  // const { seasons } = useAppSelector((state) => state.seasonReducer);
+
+  const {
+    garanties,
+    countries,
+    materialsArc,
+    materialsBottom,
+    placecounts,
+    seasons,
+  } = useGetOptions();
 
   return (
     <div className={`${bootstrap['col-3']}`}>
@@ -36,32 +45,40 @@ const Filters = () => {
           </li>
           <li className={`${styles.material}`}>
             <span>Материал</span>
-            {/* <Popper
+            <Popper
               type={DataVariant.name}
               title='Выберите материал'
-              elements={matArc}></Popper> */}
+              handleChange={() => console.log('')}
+              value={''}
+              elements={materialsArc}></Popper>
           </li>
           <li className={`${styles.windRes}`}>
             <span>Сезон</span>
-            {/* <Popper
+            <Popper
               type={DataVariant.year}
               title='Выберите сезон'
-              elements={seasons}></Popper> */}
+              handleChange={() => console.log('')}
+              value={''}
+              elements={seasons}></Popper>
           </li>
           <li className={`${styles.placeCount}`}>
             <span>Количество мест</span>
-            {/* <Popper
+            <Popper
               type={DataVariant.count}
               title='Выберите кол-во мест'
-              elements={placecounts}></Popper> */}
+              handleChange={() => console.log('')}
+              value={''}
+              elements={placecounts}></Popper>
           </li>
           <li className={`${styles.countryMadeIn}`}>
             <span>Страна производства</span>
             {/* <button className={`${styles.button}`}>Выбрать</button> */}
-            {/* <Popper
+            <Popper
               type={DataVariant.name}
               title='Выберите страну производства'
-              elements={countries}></Popper> */}
+              handleChange={() => console.log('')}
+              value={''}
+              elements={countries}></Popper>
           </li>
         </ul>
       </div>

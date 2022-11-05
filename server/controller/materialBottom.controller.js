@@ -6,7 +6,6 @@ class MaterialBottomController {
     const newMaterialBottom = await materialBottomServices.createMaterialBottom(
       name,
     );
-    console.log(newMaterialBottom);
     res.json(newMaterialBottom, 201);
   }
   async getAllMaterialsBottom(req, res) {

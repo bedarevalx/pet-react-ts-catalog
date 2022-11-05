@@ -2,12 +2,10 @@ const db = require('../db');
 
 class MaterialArcServices {
   async createMaterialArc(name) {
-    console.log(name);
     const newMaterialArc = await db.query(
       'INSERT INTO material_arc (name) values ($1) RETURNING *',
       [name],
     );
-    console.log(newMaterialArc);
     return newMaterialArc.rows[0];
   }
   async getAllMaterialsArc() {

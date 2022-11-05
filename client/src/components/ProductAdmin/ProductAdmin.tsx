@@ -1,12 +1,13 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { IOption, IParagraph, IProduct, ITent } from '../../types/types';
+import { useAppDispatch } from '../../hooks/redux';
+import { IParagraph, ITent } from '../../types/types';
 import Popper from '../Popper/Popper';
 import styles from './/ProductAdmin.module.scss';
 import { DataVariant } from '../OptionsAdmin/OptionsAdmin';
 import { createTent, editTent } from '../../store/reducers/TentSlice';
 import { useParams } from 'react-router-dom';
-import axios from '../../axiosInstance';
+import useFileLoad from '../../hooks/useFileLoad';
+import useGetOptions from '../../hooks/useGetOptions';
 
 interface ProductAdminProps {
   product?: ITent | undefined;
@@ -15,18 +16,17 @@ interface ProductAdminProps {
 const ProductAdmin: FC<ProductAdminProps> = ({ product }) => {
   const dispatch = useAppDispatch();
   const { id } = useParams();
+
   //store data
-  const { garanties } = useAppSelector((state) => state.garanteeReducer);
-  const { countries } = useAppSelector((state) => state.countryReducer);
-  const { colors } = useAppSelector((state) => state.colorReducer);
-  const { materials: materialsArc } = useAppSelector(
-    (state) => state.materialArcReducer,
-  );
-  const { materials: materialsBottom } = useAppSelector(
-    (state) => state.materialBottomReducer,
-  );
-  const { placecounts } = useAppSelector((state) => state.placecountReducer);
-  const { seasons } = useAppSelector((state) => state.seasonReducer);
+  const {
+    garanties,
+    countries,
+    colors,
+    materialsArc,
+    materialsBottom,
+    placecounts,
+    seasons,
+  } = useGetOptions();
 
   //input states
   const [inputParagraphsCount, setInputParagraphsCount] = useState<number>(
@@ -42,7 +42,6 @@ const ProductAdmin: FC<ProductAdminProps> = ({ product }) => {
   const [inputDescription, setInputDescription] = useState(
     product ? product.description : '',
   );
-  const [inputColor, setInputColor] = useState('');
   const [inputWaterproofBot, setInputWaterproofBot] = useState(
     product ? product.waterproofBot : '',
   );
@@ -50,7 +49,6 @@ const ProductAdmin: FC<ProductAdminProps> = ({ product }) => {
     product ? product.waterproofAwn : '',
   );
   const [inputPrice, setInputPrice] = useState(product ? product.price : '');
-  const [uploadedFiles, setUploadedFiles] = useState<string[]>([]);
 
   //select states
   const [selectedGarantee, setSelectedGarantee] = React.useState(
@@ -79,59 +77,10 @@ const ProductAdmin: FC<ProductAdminProps> = ({ product }) => {
   const paragraphsRef = useRef<HTMLTableCellElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const toBase64 = (file: File) =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-    });
-
-  const onFileInputChange = async (files: FileList | null) => {
-    console.log('hahah');
-    if (!files) {
-      return;
-    }
-    const base64Files: string[] = [];
-
-    for (let i = 0; i < files.length; i++) {
-      base64Files.push((await toBase64(files.item(i) as File)) as string);
-    }
-    console.log(base64Files);
-
-    setUploadedFiles((prev) => [...prev, ...base64Files]);
-  };
-
-  function blobToBase64(blob: Blob) {
-    return new Promise((resolve, _) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result);
-      reader.readAsDataURL(blob);
-    });
-  }
-
-  const handleDeleteImage = (index: number) => {
-    setUploadedFiles((prev) => prev.filter((prevImage, i) => i !== index));
-  };
+  const { uploadedFiles, onFileInputChange, fetchImages, handleDeleteImage } =
+    useFileLoad(product?.photoUrls);
 
   useEffect(() => {
-    async function fetchImages() {
-      if (!product) return;
-      console.log('have product');
-      const responses = await Promise.all(
-        product.photoUrls.map(
-          async (photoUrl) =>
-            await axios.get(`${photoUrl}`, { responseType: 'blob' }),
-        ),
-      );
-
-      const base64Images = await Promise.all(
-        responses.map(async (response) => await blobToBase64(response.data)),
-      );
-      console.log(base64Images);
-      setUploadedFiles(base64Images as string[]);
-    }
-
     fetchImages();
   }, []);
 
@@ -167,7 +116,6 @@ const ProductAdmin: FC<ProductAdminProps> = ({ product }) => {
       idColor: selectedColor,
       photoUrls: uploadedFiles,
     };
-    console.log(newTent.photoUrls);
 
     product
       ? dispatch(editTent({ tent: newTent, id: id }))

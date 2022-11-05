@@ -27,9 +27,11 @@ export const createColor = createAsyncThunk<IOption, string,{rejectValue: string
     async function (name,{rejectWithValue}) {
         const response = await axios.post('/api/color',{name});
         if(response.status !== 201){
+            alert('Something went wrong!')
             return rejectWithValue('Server error!')
         }
         const data = response.data;
+        alert('Success!')
 
         return data as IOption;
     }

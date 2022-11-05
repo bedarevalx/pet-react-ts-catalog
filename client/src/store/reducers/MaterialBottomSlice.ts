@@ -32,11 +32,12 @@ export const createMaterialBottom = createAsyncThunk<IOption, string,{rejectValu
     'garantee/createMaterialBottom',
     async function (name,{rejectWithValue}) {
         const response = await axios.post('/api/material-bottom',{name});
-        if(response.status !== 200){
+        if(response.status !== 201){
+            alert('Something went wrong!')
             return rejectWithValue('Server error!')
         }
         const data = response.data;
-
+        alert('Success!')
         return data as IOption;
     }
 )
