@@ -2,6 +2,9 @@ const db = require('../db');
 
 class CountryServices {
   async createCountry(name) {
+    if (!name || name.search(/\d/) !== -1) {
+      throw new Error('Validation Error');
+    }
     const newContry = await db.query(
       'INSERT INTO country (name) values ($1) RETURNING *',
       [name],

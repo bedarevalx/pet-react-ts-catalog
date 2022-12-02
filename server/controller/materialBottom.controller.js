@@ -1,20 +1,32 @@
-const materialBottomServices = require('../services/materialBottom.services');
+const materialBottomServices = require('../services/materialBottom.service');
 
 class MaterialBottomController {
   async createMaterialBottom(req, res) {
-    const { name } = req.body;
-    const newMaterialBottom = await materialBottomServices.createMaterialBottom(
-      name,
-    );
-    res.json(newMaterialBottom, 201);
+    try {
+      const { name } = req.body;
+      const newMaterialBottom =
+        await materialBottomServices.createMaterialBottom(name);
+      res.json(newMaterialBottom, 201);
+    } catch (error) {
+      console.log(error);
+      res.status(422).json('Validation Error!');
+    }
   }
   async getAllMaterialsBottom(req, res) {
-    const allMaterials = await materialBottomServices.getAllMaterialsBottom();
-    res.json(allMaterials);
+    try {
+      const allMaterials = await materialBottomServices.getAllMaterialsBottom();
+      res.json(allMaterials);
+    } catch (error) {
+      console.log(error);
+    }
   }
   async deleteMaterial(req, res) {
-    const { id } = req.body;
-    res.json(await materialBottomServices.deleteMaterial(id));
+    try {
+      const { id } = req.body;
+      res.json(await materialBottomServices.deleteMaterial(id));
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
 

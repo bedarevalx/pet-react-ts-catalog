@@ -2,6 +2,9 @@ const db = require('../db');
 
 class MaterialArcServices {
   async createMaterialArc(name) {
+    if (!name || name.search(/\d/) !== -1) {
+      throw new Error('Validation Error');
+    }
     const newMaterialArc = await db.query(
       'INSERT INTO material_arc (name) values ($1) RETURNING *',
       [name],

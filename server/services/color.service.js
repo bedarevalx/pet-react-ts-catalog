@@ -2,6 +2,9 @@ const db = require('../db');
 
 class ColorServices {
   async createColor(name) {
+    if (!name || name.search(/\d/) !== -1) {
+      throw new Error('Validation Error');
+    }
     const newColor = await db.query(
       'INSERT INTO color (name) values ($1) RETURNING *',
       [name],

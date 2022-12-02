@@ -17,12 +17,14 @@ class PhotoService {
         fs.rmSync(`${'static/' + tentId}/${f}`),
       );
     }
-    const responses = photos.map(async (photo, index) => {
+    photos.map(async (photo, index) => {
       fs.writeFileSync(
         `static/${tentId}/${index}.jpeg`,
         photo.replace(/^data:image\/jpeg;base64,/, ''),
         'base64',
-        function (err) {},
+        function (err) {
+          console.log(err);
+        },
       );
     });
   }

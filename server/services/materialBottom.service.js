@@ -2,6 +2,9 @@ const db = require('../db');
 
 class MaterialBottomServices {
   async createMaterialBottom(name) {
+    if (!name || name.search(/\d/) !== -1) {
+      throw new Error('Validation Error');
+    }
     const newMaterialBottom = await db.query(
       'INSERT INTO material_bottom (name) values ($1) RETURNING *',
       [name],

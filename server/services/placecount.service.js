@@ -2,6 +2,9 @@ const db = require('../db');
 
 class PlacecountServices {
   async createPlacecount(count) {
+    if (!count) {
+      throw new Error('Validation Error');
+    }
     const newPlacecount = await db.query(
       'INSERT INTO placecount (count) values ($1) RETURNING *',
       [count],

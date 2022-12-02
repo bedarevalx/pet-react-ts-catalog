@@ -23,7 +23,9 @@ const Popper: FC<PopperProps> = ({
       onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
         handleChange(e.target.value)
       }>
-      <option value=''>{title}</option>
+      <option value='' disabled>
+        {title}
+      </option>
       {elements?.map((element, index) => (
         <option key={index} value={element.id}>
           {element[type]}

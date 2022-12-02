@@ -2,6 +2,10 @@ const db = require('../db');
 
 class GaranteeServices {
   async createGarantee(time) {
+    if (!time) {
+      console.log(time, 'SOME ERROR');
+      throw new Error('Validation Error');
+    }
     const newContry = await db.query(
       'INSERT INTO garantee (time) values ($1) RETURNING *',
       [time],

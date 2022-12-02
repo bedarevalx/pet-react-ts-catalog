@@ -1,9 +1,11 @@
 const db = require('../db');
-const paragraphServices = require('../services/paragraph.services');
+const paragraphServices = require('./paragraph.service');
+const validateService = require('../services/validation.service');
 const photoService = require('./photo.service');
 
 class TentServices {
   async createTent(tent) {
+    validateService.validateTent(tent);
     const {
       article,
       manufacturer,
@@ -81,6 +83,8 @@ class TentServices {
     }
   }
   async editTent(id, tent) {
+    // console.log(tent);
+    validateService.validateTent(tent);
     const paragraphs = await paragraphServices.updateParagraphsById(
       id,
       tent.paragraphs,

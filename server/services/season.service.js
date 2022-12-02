@@ -2,6 +2,9 @@ const db = require('../db');
 
 class SeasonServices {
   async createSeason(year) {
+    if (!year) {
+      throw new Error('Validation Error');
+    }
     const newSeason = await db.query(
       'INSERT INTO season (year) values ($1) RETURNING *',
       [year],
