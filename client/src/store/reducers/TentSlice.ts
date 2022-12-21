@@ -17,6 +17,7 @@ type CardResponse = {
 
 type QueryParams = {
   page: number;
+  name: string;
 };
 
 export const fetchTents = createAsyncThunk<
@@ -42,11 +43,13 @@ export const fetchCards = createAsyncThunk<
   CardResponse,
   QueryParams,
   { rejectValue: string }
->('tent/fetchCards', async function ({ page }, { rejectWithValue }) {
-  try {
-    const response = await axios.get<CardResponse>('/api/tent?page=' + page);
-    const data = response.data;
+>('tent/fetchCards', async function ({ page, name }, { rejectWithValue }) {
+  const queryName = `&name=${name}`
+  const queryPage = `?page=${page}`
 
+  try {
+    const response = await axios.get<CardResponse>(`/api/tent?page=${page}&name=${name}`);
+    const data = response.data;
     return data;
   } catch (error) {
     alert('server error!!');

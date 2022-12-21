@@ -38,10 +38,10 @@ class TentController {
   }
   async getlAllCards(req, res) {
     try {
-      const { page } = req.query;
+      const { page, name } = req.query;
       const paginationStep = 8;
-      const totalPages = await tentServices.getTotalPages(paginationStep);
-      const allTents = await tentServices.getCards(paginationStep, page);
+      const totalPages = await tentServices.getTotalPages(paginationStep, name);
+      const allTents = await tentServices.getCards(paginationStep, page, name);
 
       res.json({ data: allTents, totalPages });
     } catch (error) {

@@ -48,9 +48,12 @@ class TentServices {
     return allTents.rows;
   }
 
-  async getCards(step, page) {
+  async getCards(step, page, name) {
+    console.log(name);
+    const containQuery = name ? `where name ilike '%${name}%'` : '';
+    console.log(containQuery);
     const cards = await db.query(
-      'SELECT id, name, price FROM tent OFFSET $1 LIMIT $2',
+      `SELECT id, name, price FROM tent ${containQuery} OFFSET $1 LIMIT $2`,
       [step * (page - 1), step],
     );
     const photoUrls = await Promise.all(
@@ -111,8 +114,11 @@ class TentServices {
     updatedTent.rows[0].paragraphs = paragraphs;
     return updatedTent.rows[0];
   }
-  async getTotalPages(step) {
-    const totalCount = await db.query(`SELECT count(*) FROM tent`);
+  async getTotalPages(step, name) {
+    const containQuery = name ? `where name ilike '%${name}%'` : '';
+    const totalCount = await db.query(
+      `SELECT count(*) FROM tent ${containQuery}`,
+    );
     const totalPages = Math.ceil(totalCount.rows[0].count / step);
     return totalPages;
   }
